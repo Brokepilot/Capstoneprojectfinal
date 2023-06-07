@@ -60,7 +60,7 @@ void main() {
   var semester2 = Semester(name: '1-2', classesTaken: [class8, class9]);
   var semester3 = Semester(name: '2-1', classesTaken: [class12, class13]);
   var semester4 = Semester(name: '2-2', classesTaken: [class26, class27]);
-  var semester5 = Semester(name: '3-1', classesTaken: []);
+  var semester5 = Semester(name: '3-1', classesTaken: [class10]);
   var semester6 = Semester(name: '3-2', classesTaken: []);
   var semester7 = Semester(name: '4-1', classesTaken: []);
   var semester8 = Semester(name: '4-2', classesTaken: []);

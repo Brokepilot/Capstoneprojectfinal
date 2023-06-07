@@ -25,6 +25,8 @@ class Semester {
 }
 
 
+
+
 class ClassTaken {
   final String className;
   final String creditType;
@@ -70,7 +72,7 @@ class User {
 
   // Calculate total credits currently taking
   int totalCreditsTaking() {
-    int total = 10;
+    int total = 0;
     for (var classTaken in allClasses) {
       total += classTaken.credits;
     }
@@ -89,4 +91,52 @@ class User {
     }
     return total;
   }
+  // Calculate total credits in a particular semester
+  int totalCreditsInSemester(String semesterName) {
+    int total = 0;
+    for (var semester in semesters) {
+      if (semester.name == semesterName) {
+        for (var classTaken in semester.classesTaken) {
+          total += classTaken.credits;
+        }
+      }
+    }
+    return total;
+  }
+
+  // Calculate total credits taken so far
+  int totalCreditsTaken() {
+    int total = 0;
+    for (var semester in semesters) {
+      for (var classTaken in semester.classesTaken) {
+        total += classTaken.credits;
+      }
+    }
+    return total;
+  }
+
+
+void addClassToSemester(ClassTaken classTaken, Semester semester) {
+  semester.addClass(classTaken);
+  allClasses.add(classTaken);
+
+  // Find the corresponding creditType and update earnedCredits
+  for (var creditType in creditTypes) {
+    if (creditType.type == classTaken.creditType) {
+      creditType.earnedCredits += classTaken.credits;
+    }
+  }
+}
+
+void removeClassFromSemester(ClassTaken classTaken, Semester semester) {
+  semester.removeClass(classTaken);
+  allClasses.remove(classTaken);
+
+  // Find the corresponding creditType and update earnedCredits
+  for (var creditType in creditTypes) {
+    if (creditType.type == classTaken.creditType) {
+      creditType.earnedCredits -= classTaken.credits;
+    }
+  }
+}
 }

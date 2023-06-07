@@ -9,32 +9,34 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int totalCreditsTaken = user.totalCreditsEarned();
-    int creditsTaking = user.totalCreditsTaking();
-    int creditsRemaining = 100 -
+    int totalCreditsTaken = user.totalCreditsTaken();
+    int creditsTaking = user.totalCreditsInSemester('3-1');
+    int creditsRemaining = 99 -
         (totalCreditsTaken +
             creditsTaking); // assuming 100 is the total credits needed to graduate
 
-    List<PieChartSectionData> sections = [
-      PieChartSectionData(
-        value: totalCreditsTaken.toDouble(),
-        color: Colors.green,
-        title: '',
-        titleStyle: TextStyle(fontSize: 16),
-      ),
-      PieChartSectionData(
-        value: creditsTaking.toDouble(),
-        color: Colors.orange,
-        title: '',
-        titleStyle: TextStyle(fontSize: 16),
-      ),
-      PieChartSectionData(
-        value: creditsRemaining.toDouble(),
-        color: Colors.grey,
-        title: '',
-        titleStyle: TextStyle(fontSize: 16),
-      ),
-    ];
+  List<PieChartSectionData> sections = [
+  PieChartSectionData(
+    value: totalCreditsTaken.toDouble(),
+    color: Colors.green,
+    title: '',
+    titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+  ),
+  PieChartSectionData(
+    value: creditsTaking.toDouble(),
+    color: Colors.orange,
+    title: '',
+    titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+  ),
+  PieChartSectionData(
+    value: creditsRemaining.toDouble(),
+    color: Colors.grey,
+    title: '',
+    titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+  ),
+];
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -122,20 +124,21 @@ class MainPage extends StatelessWidget {
   }
 
   List<Widget> _buildLegendItems(List<PieChartSectionData> sections) {
-    return sections.map((section) {
-      return Row(
-        children: [
-          Container(
-            width: 16,
-            height: 16,
-            color: section.color,
-          ),
-          SizedBox(width: 5),
-          Text(section.title, style: TextStyle(fontSize: 16)),
-        ],
-      );
-    }).toList();
-  }
+  return sections.map((section) {
+    return Row(
+      children: [
+        Container(
+          width: 16,
+          height: 16,
+          color: section.color,
+        ),
+        SizedBox(width: 5),
+        Text(section.title, style: TextStyle(fontSize: 16)),
+      ],
+    );
+  }).toList();
+}
+
 
   Widget _buildMajorColumn(String type) {
   int earnedCredits = user.creditsEarnedOfType(type);
