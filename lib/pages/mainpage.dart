@@ -104,7 +104,7 @@ class MainPage extends StatelessWidget {
             IconButton(
               onPressed: () {
                 // Navigate to the Edit Page
-                Navigator.pushNamed(context, '/edit');
+                Navigator.pushNamed(context, '/view');
               },
               icon: Icon(Icons.edit),
             ),
