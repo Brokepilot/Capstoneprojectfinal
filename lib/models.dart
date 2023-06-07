@@ -5,7 +5,6 @@ class CreditType {
 
   CreditType({required this.type, required this.requiredCredits, this.earnedCredits = 10});
 }
-
 class Semester {
   final String name;
   final List<ClassTaken> classesTaken;

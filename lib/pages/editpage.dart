@@ -82,8 +82,7 @@ class _EditPageState extends State<EditPage> {
                   }).toList(),
                   ElevatedButton(
                     onPressed: () {
-                      // This just adds a dummy class for now.
-                      // You'll need to replace this with a dialog or another page where the user can input class details.
+                      
                       setState(() {
                         selectedSemester.classesTaken.add(ClassTaken(className: 'New Class', creditType: 'Placeholder', credits: 3));
                       });
