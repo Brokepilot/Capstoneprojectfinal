@@ -16,7 +16,6 @@ class _ViewPageState extends State<ViewPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     var class1 = ClassTaken(className: '정보컴퓨팅기술개론', creditType: '전기', credits: 3);
     var class2 = ClassTaken(className: '정보프로그래밍기초', creditType: '전기', credits: 3);
     selectedSemester =  Semester(name: '1-1', classesTaken: [class1, class2]); 
@@ -80,6 +79,17 @@ class _ViewPageState extends State<ViewPage> {
                 }).toList(),
               ],
             ),
+          SizedBox(height: 20),
+          // Added a new Row widget for the new container
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildColumn('T1', '0'), // replace '0' with the value you want
+              _buildColumn('T2', '0'), // replace '0' with the value you want
+              _buildColumn('T3', '0'), // replace '0' with the value you want
+              _buildColumn('T4', '0'), // replace '0' with the value you want
+            ],
+          ),
         ],
       ),
       bottomNavigationBar: _buildBottomAppBar(context),
@@ -133,4 +143,20 @@ class _ViewPageState extends State<ViewPage> {
       ),
     );
   }
+
+  Widget _buildColumn(String title, String number) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          number,
+          style: TextStyle(fontSize: 18),
+        ),
+      ],
+    );
+  }
+
 }

@@ -78,7 +78,7 @@ class MainPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("Major", style: TextStyle(fontSize: 20)),
+                    Text("AIE", style: TextStyle(fontSize: 20)),
                     _buildMajorColumn('전기'),
                     _buildMajorColumn('전선'),
                     _buildMajorColumn('전필'),
