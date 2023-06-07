@@ -65,8 +65,6 @@ class _ViewPageState extends State<ViewPage> {
             ),
           ),
           SizedBox(height: 20),
-          // New container with 4 columns
-          // New container with 4 columns
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -76,6 +74,11 @@ class _ViewPageState extends State<ViewPage> {
               _buildColumn('3.4000', selectedSemester),
             ],
           ),
+          SizedBox(height: 20),
+          _buildClassList('전기', selectedSemester),
+          _buildClassList('전선', selectedSemester),
+          _buildClassList('전필', selectedSemester),
+          _buildClassList('3.4000', selectedSemester),
         ],
       ),
       bottomNavigationBar: _buildBottomAppBar(context),
@@ -151,4 +154,26 @@ class _ViewPageState extends State<ViewPage> {
       ],
     );
   }
+
+    Widget _buildClassList(String title, Semester semester) {
+    List<ClassTaken> classes = semester.classesTaken
+        .where((classTaken) => classTaken.creditType == title)
+        .toList();
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center( // Add Center widget here
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        ...classes.map((classTaken) => Center(child: Text(classTaken.className))).toList(), // And here
+      ],
+    );
+  }
+
 }
