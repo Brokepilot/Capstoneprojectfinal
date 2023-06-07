@@ -93,7 +93,7 @@ class EndMeApp extends StatelessWidget {
         '/': (context) => MainPage(user: user),
         '/view': (context) => ViewPage(user: user),
         '/edit': (context) => EditPage(user: user),
-        '/friends': (context) => FriendsPage(),
+        '/friends': (context) => FriendsPage(user: user),
       },
     );
   }

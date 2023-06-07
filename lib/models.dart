@@ -139,4 +139,14 @@ void removeClassFromSemester(ClassTaken classTaken, Semester semester) {
     }
   }
 }
+
+}
+class Friend {
+  int friendId;
+  List<ClassTaken> classesTaken;
+
+  Friend({
+    required this.friendId,
+    required this.classesTaken,
+  });
 }
