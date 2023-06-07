@@ -124,7 +124,10 @@ class MainPage extends StatelessWidget {
   }
 
   List<Widget> _buildLegendItems(List<PieChartSectionData> sections) {
-  return sections.map((section) {
+  List<String> labels = ['Taken', 'Taking', 'Remaining'];
+  return sections.asMap().entries.map((entry) {
+    int idx = entry.key;
+    PieChartSectionData section = entry.value;
     return Row(
       children: [
         Container(
@@ -133,11 +136,12 @@ class MainPage extends StatelessWidget {
           color: section.color,
         ),
         SizedBox(width: 5),
-        Text(section.title, style: TextStyle(fontSize: 16)),
+        Text('${labels[idx]}: ${section.value.toInt()}', style: TextStyle(fontSize: 16)),
       ],
     );
   }).toList();
 }
+
 
 
   Widget _buildMajorColumn(String type) {
