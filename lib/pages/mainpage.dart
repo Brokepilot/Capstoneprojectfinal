@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:endme/models.dart'; // make sure the path is correct
 
 class MainPage extends StatelessWidget {
-  final int totalCreditsTaken; // Variable to store total credits taken
-  final int creditsRemaining; // Variable to store credits remaining
-  final int userid;
+  final User user;
 
-  MainPage({required this.totalCreditsTaken, required this.creditsRemaining, required this.userid});
+  MainPage({required this.user});
 
   @override
   Widget build(BuildContext context) {
+    int totalCreditsTaken = user.creditTypes.fold(0, (sum, item) => sum + item.earnedCredits);
+    int creditsRemaining = 99 - totalCreditsTaken; // assuming 100 is the total credits needed to graduate
+
     return Scaffold(
       appBar: AppBar(
         title: Text('GLCCAL'),
@@ -20,7 +22,7 @@ class MainPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Welcome $userid',
+              'Welcome ${user.userid}', // use user id from User model
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
@@ -29,26 +31,14 @@ class MainPage extends StatelessWidget {
                 aspectRatio: 1.2, // Adjust this value to change the size of the pie chart
                 child: PieChart(
                   PieChartData(
-                    sections: [
-                      PieChartSectionData(
-                        value: 30,
-                        color: Colors.blue,
-                        title: '',
+                    sections: user.creditTypes.map((creditType) { // map over credit types for the user
+                      return PieChartSectionData(
+                        value: creditType.earnedCredits.toDouble(), // use earnedCredits from CreditType model
+                        color: Colors.blue, // you can change this to different colors for different credit types
+                        title: creditType.type, // use name from CreditType model
                         titleStyle: TextStyle(fontSize: 16),
-                      ),
-                      PieChartSectionData(
-                        value: 50,
-                        color: Colors.green,
-                        title: '',
-                        titleStyle: TextStyle(fontSize: 16),
-                      ),
-                      PieChartSectionData(
-                        value: 20,
-                        color: Colors.orange,
-                        title: '',
-                        titleStyle: TextStyle(fontSize: 16),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                     sectionsSpace: 0,
                     centerSpaceRadius: 40,
                     startDegreeOffset: -90,
@@ -60,11 +50,9 @@ class MainPage extends StatelessWidget {
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildLegendItem('Field 1', Colors.blue),
-                _buildLegendItem('Field 2', Colors.green),
-                _buildLegendItem('Field 3', Colors.orange),
-              ],
+              children: user.creditTypes.map((creditType) { // map over credit types for the user
+                return _buildLegendItem(creditType.type, Colors.blue); // use name from CreditType model, you can change the color for different credit types
+              }).toList(),
             ),
             SizedBox(height: 40),
             Container(
@@ -72,7 +60,7 @@ class MainPage extends StatelessWidget {
               color: Colors.grey[200],
               child: Center(
                 child: Text(
-                  'Container 1',
+                  '',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -83,7 +71,7 @@ class MainPage extends StatelessWidget {
               color: Colors.grey[200],
               child: Center(
                 child: Text(
-                  'Container 2',
+                  '',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -128,11 +116,11 @@ class MainPage extends StatelessWidget {
         Container(
           width: 16,
           height: 16,
-          color: color,
-        ),
-        SizedBox(width: 8),
-        Text(label),
-      ],
-    );
-  }
+        color: color,
+      ),
+      SizedBox(width: 8),
+      Text(label),
+    ],
+  );
+}
 }
