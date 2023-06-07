@@ -9,8 +9,32 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int totalCreditsTaken = user.creditTypes.fold(0, (sum, item) => sum + item.earnedCredits);
-    int creditsRemaining = 99 - totalCreditsTaken; // assuming 100 is the total credits needed to graduate
+    int totalCreditsTaken = user.totalCreditsEarned();
+    int creditsTaking = user.totalCreditsTaking();
+    int creditsRemaining = 100 -
+        (totalCreditsTaken +
+            creditsTaking); // assuming 100 is the total credits needed to graduate
+
+    List<PieChartSectionData> sections = [
+      PieChartSectionData(
+        value: totalCreditsTaken.toDouble(),
+        color: Colors.green,
+        title: '',
+        titleStyle: TextStyle(fontSize: 16),
+      ),
+      PieChartSectionData(
+        value: creditsTaking.toDouble(),
+        color: Colors.orange,
+        title: '',
+        titleStyle: TextStyle(fontSize: 16),
+      ),
+      PieChartSectionData(
+        value: creditsRemaining.toDouble(),
+        color: Colors.grey,
+        title: '',
+        titleStyle: TextStyle(fontSize: 16),
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -28,17 +52,11 @@ class MainPage extends StatelessWidget {
             SizedBox(height: 20),
             Expanded(
               child: AspectRatio(
-                aspectRatio: 1.2, // Adjust this value to change the size of the pie chart
+                aspectRatio:
+                    1.2, // Adjust this value to change the size of the pie chart
                 child: PieChart(
                   PieChartData(
-                    sections: user.creditTypes.map((creditType) { // map over credit types for the user
-                      return PieChartSectionData(
-                        value: creditType.earnedCredits.toDouble(), // use earnedCredits from CreditType model
-                        color: Colors.blue, // you can change this to different colors for different credit types
-                        title: creditType.type, // use name from CreditType model
-                        titleStyle: TextStyle(fontSize: 16),
-                      );
-                    }).toList(),
+                    sections: sections,
                     sectionsSpace: 0,
                     centerSpaceRadius: 40,
                     startDegreeOffset: -90,
@@ -50,29 +68,22 @@ class MainPage extends StatelessWidget {
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: user.creditTypes.map((creditType) { // map over credit types for the user
-                return _buildLegendItem(creditType.type, Colors.blue); // use name from CreditType model, you can change the color for different credit types
-              }).toList(),
+              children: _buildLegendItems(sections),
             ),
             SizedBox(height: 40),
             Container(
               height: 100,
               color: Colors.grey[200],
               child: Center(
-                child: Text(
-                  '',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: 100,
-              color: Colors.grey[200],
-              child: Center(
-                child: Text(
-                  '',
-                  style: TextStyle(fontSize: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Major", style: TextStyle(fontSize: 20)),
+                    _buildMajorColumn('전기'),
+                    _buildMajorColumn('전선'),
+                    _buildMajorColumn('전필'),
+                    _buildMajorColumn('3.4000'),
+                  ],
                 ),
               ),
             ),
@@ -92,10 +103,10 @@ class MainPage extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                // Navigate to the View Page
-                Navigator.pushNamed(context, '/view');
+                // Navigate to the Edit Page
+                Navigator.pushNamed(context, '/edit');
               },
-              icon: Icon(Icons.pageview),
+              icon: Icon(Icons.edit),
             ),
             IconButton(
               onPressed: () {
@@ -110,17 +121,43 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLegendItem(String label, Color color) {
-    return Row(
+  List<Widget> _buildLegendItems(List<PieChartSectionData> sections) {
+    return sections.map((section) {
+      return Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            color: section.color,
+          ),
+          SizedBox(width: 5),
+          Text(section.title, style: TextStyle(fontSize: 16)),
+        ],
+      );
+    }).toList();
+  }
+
+  Widget _buildMajorColumn(String type) {
+    int earnedCredits = user.creditsEarnedOfType(type);
+    int requiredCredits = 0;
+    for (var creditType in user.creditTypes) {
+      if (creditType.type == type) {
+        requiredCredits = creditType.requiredCredits;
+        break;
+      }
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: 16,
-          height: 16,
-        color: color,
-      ),
-      SizedBox(width: 8),
-      Text(label),
-    ],
-  );
-}
+        Text(
+          type, // Display the type
+          style: TextStyle(fontSize: 20),
+        ),
+        Text(
+          '$earnedCredits/$requiredCredits', // Display the credit count
+          style: TextStyle(fontSize: 16),
+        ),
+      ],
+    );
+  }
 }

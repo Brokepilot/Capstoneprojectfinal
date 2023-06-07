@@ -13,20 +13,23 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   late List<Semester> semesters;
   late Semester selectedSemester;
+  late List<ClassTaken> allClasses;
+  late ClassTaken selectedClass;
 
   @override
   void initState() {
-    // TODO: implement initState
-    var class1 = ClassTaken(className: '정보컴퓨팅기술개론', creditType: '전기', credits: 3);
-    var class2 = ClassTaken(className: '정보프로그래밍기초', creditType: '전기', credits: 3);
-    semesters =  [
-      Semester(name: '1-1', classesTaken: [class1, class2])
-    ]; 
-        selectedSemester =  Semester(name: '1-1', classesTaken: [class1, class2]); 
+    // Initialize semesters with user's semesters
+    semesters = widget.user.semesters;
+    // Initialize selectedSemester with the first semester
+    selectedSemester = semesters[0];
+
+    // Initialize allClasses with user's allClasses
+    allClasses = widget.user.allClasses;
+    // Initialize selectedClass with the first class
+    selectedClass = allClasses[0];
 
     super.initState();
   }
-  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +58,41 @@ class _EditPageState extends State<EditPage> {
             if (semesters != null) 
             DropdownButton<Semester>(
               value: selectedSemester,
-              onChanged: (newValue) {
-                // if (newValue != null) {
-                //   setState(() {
-                //     selectedSemester = newValue;
-                //   });
-                // }
+              onChanged: (Semester? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedSemester = newValue;
+                  });
+                }
               },
-              items: [],
+              items: semesters.map((semester) {
+                return DropdownMenuItem(
+                  value: semester,
+                  child: Text(semester.name),
+                );
+              }).toList(),
+            ),
+            Text(
+              'Select a Class',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            if (allClasses != null) 
+            DropdownButton<ClassTaken>(
+              value: selectedClass,
+              onChanged: (ClassTaken? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedClass = newValue;
+                  });
+                }
+              },
+              items: allClasses.map((class_) {
+                return DropdownMenuItem(
+                  value: class_,
+                  child: Text(class_.className),
+                );
+              }).toList(),
             ),
             if (selectedSemester != null)
               Column(
@@ -82,9 +112,8 @@ class _EditPageState extends State<EditPage> {
                   }).toList(),
                   ElevatedButton(
                     onPressed: () {
-                      
                       setState(() {
-                        selectedSemester.classesTaken.add(ClassTaken(className: 'New Class', creditType: 'Placeholder', credits: 3));
+                        selectedSemester.classesTaken.add(selectedClass);
                       });
                     },
                     child: Text('Add Class'),

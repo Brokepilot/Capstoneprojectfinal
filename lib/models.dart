@@ -21,9 +21,44 @@ class ClassTaken {
 }
 
 class User {
-  final int userid;
-  final List<CreditType> creditTypes;
-  final List<Semester> semesters;
+  int userid;
+  List<CreditType> creditTypes;
+  List<Semester> semesters;
+  List<ClassTaken> allClasses;
 
-  User({required this.userid, required this.creditTypes, required this.semesters});
+  User({
+    required this.userid,
+    required this.creditTypes,
+    required this.semesters,
+    required this.allClasses,
+  });
+
+  int creditsEarnedOfType(String type) {
+  int total = 0;
+  for (var classTaken in allClasses) {
+    if (classTaken.creditType == type) {
+      total += classTaken.credits;
+    }
+  }
+  return total;
+}
+
+
+  // Calculate total credits earned
+  int totalCreditsEarned() {
+    int total = 0;
+    for (var creditType in creditTypes) {
+      total += creditType.earnedCredits;
+    }
+    return total;
+  }
+
+  // Calculate total credits currently taking
+  int totalCreditsTaking() {
+    int total = 10;
+    for (var classTaken in allClasses) {
+      total += classTaken.credits;
+    }
+    return total;
+  }
 }

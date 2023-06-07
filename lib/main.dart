@@ -45,8 +45,12 @@ void main() {
   var semester8 = Semester(name: '4-2', classesTaken: []);
 
   // Create a User
-  var user = User(userid: 2021106149, creditTypes: [creditType1, creditType2, creditType3, creditType4], semesters: [semester1, semester2, semester3, semester4, semester5, semester6, semester7, semester8]);
-
+  var user = User(
+    userid: 2021106149, 
+    creditTypes: [creditType1, creditType2, creditType3, creditType4], 
+    semesters: [semester1, semester2, semester3, semester4, semester5, semester6, semester7, semester8],
+    allClasses: [class1, class2, class3, class4, class5, class6, class7, class8, class9, class10, class11, class12, class13, class14, class15, class16, class17, class18, class19, class20], // New field for all classes
+  );
   runApp(EndMeApp(user: user));
 }
 
