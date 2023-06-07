@@ -11,10 +11,19 @@ class CreditType {
 
 class Semester {
   final String name;
-  final List<ClassTaken> classesTaken;
+  List<ClassTaken> classesTaken;
 
   Semester({required this.name, this.classesTaken = const []});
+
+  void addClass(ClassTaken classTaken) {
+    classesTaken.add(classTaken);
+  }
+
+  void removeClass(ClassTaken classTaken) {
+    classesTaken.remove(classTaken);
+  }
 }
+
 
 class ClassTaken {
   final String className;
