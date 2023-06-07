@@ -138,26 +138,21 @@ class MainPage extends StatelessWidget {
   }
 
   Widget _buildMajorColumn(String type) {
-    int earnedCredits = user.creditsEarnedOfType(type);
-    int requiredCredits = 0;
-    for (var creditType in user.creditTypes) {
-      if (creditType.type == type) {
-        requiredCredits = creditType.requiredCredits;
-        break;
-      }
-    }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          type, // Display the type
-          style: TextStyle(fontSize: 20),
-        ),
-        Text(
-          '$earnedCredits/$requiredCredits', // Display the credit count
-          style: TextStyle(fontSize: 16),
-        ),
-      ],
-    );
-  }
+  int earnedCredits = user.creditsEarnedOfType(type);
+  int requiredCredits = user.requiredCreditsOfType(type);
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        type, // Display the type
+        style: TextStyle(fontSize: 20),
+      ),
+      Text(
+        '$earnedCredits/$requiredCredits', // Display the credit count
+        style: TextStyle(fontSize: 16),
+      ),
+    ],
+  );
+}
+
 }

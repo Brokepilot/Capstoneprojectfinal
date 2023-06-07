@@ -3,8 +3,12 @@ class CreditType {
   final int requiredCredits;
   int earnedCredits;
 
-  CreditType({required this.type, required this.requiredCredits, this.earnedCredits = 10});
+  CreditType(
+      {required this.type,
+      required this.requiredCredits,
+      this.earnedCredits = 10});
 }
+
 class Semester {
   final String name;
   final List<ClassTaken> classesTaken;
@@ -17,7 +21,10 @@ class ClassTaken {
   final String creditType;
   final int credits;
 
-  ClassTaken({required this.className, required this.creditType, required this.credits});
+  ClassTaken(
+      {required this.className,
+      required this.creditType,
+      required this.credits});
 }
 
 class User {
@@ -33,16 +40,15 @@ class User {
     required this.allClasses,
   });
 
-  int creditsEarnedOfType(String type) {
-  int total = 0;
-  for (var classTaken in allClasses) {
-    if (classTaken.creditType == type) {
-      total += classTaken.credits;
+  //mainpage container calculator
+  int requiredCreditsOfType(String type) {
+    for (var creditType in creditTypes) {
+      if (creditType.type == type) {
+        return creditType.requiredCredits;
+      }
     }
+    return 0; // return 0 if the type is not found
   }
-  return total;
-}
-
 
   // Calculate total credits earned
   int totalCreditsEarned() {
@@ -58,6 +64,19 @@ class User {
     int total = 10;
     for (var classTaken in allClasses) {
       total += classTaken.credits;
+    }
+    return total;
+  }
+
+  // Calculate total credits earned of a certain type
+  int creditsEarnedOfType(String type) {
+    int total = 0;
+    for (var semester in semesters) {
+      for (var classTaken in semester.classesTaken) {
+        if (classTaken.creditType == type) {
+          total += classTaken.credits;
+        }
+      }
     }
     return total;
   }
