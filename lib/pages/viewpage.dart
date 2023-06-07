@@ -16,13 +16,14 @@ class _ViewPageState extends State<ViewPage> {
 
   @override
   void initState() {
-    var class1 = ClassTaken(className: '정보컴퓨팅기술개론', creditType: '전기', credits: 3);
-    var class2 = ClassTaken(className: '정보프로그래밍기초', creditType: '전기', credits: 3);
-    selectedSemester =  Semester(name: '1-1', classesTaken: [class1, class2]); 
+    var class1 =
+        ClassTaken(className: '정보컴퓨팅기술개론', creditType: '전기', credits: 3);
+    var class2 =
+        ClassTaken(className: '정보프로그래밍기초', creditType: '전기', credits: 3);
+    selectedSemester = Semester(name: '1-1', classesTaken: [class1, class2]);
     super.initState();
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +35,8 @@ class _ViewPageState extends State<ViewPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EditPage(user: widget.user), // pass user to EditPage
+                  builder: (context) =>
+                      EditPage(user: widget.user), // pass user to EditPage
                 ),
               );
             },
@@ -63,31 +65,15 @@ class _ViewPageState extends State<ViewPage> {
             ),
           ),
           SizedBox(height: 20),
-          if (selectedSemester != null) 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Selected Semester: ${selectedSemester.name}',
-                  style: TextStyle(fontSize: 20),
-                ),
-                ...selectedSemester.classesTaken.map((class_) {
-                  return Text(
-                    'Class: ${class_.className}, Credits: ${class_.credits}',
-                    style: TextStyle(fontSize: 16),
-                  );
-                }).toList(),
-              ],
-            ),
-          SizedBox(height: 20),
-          // Added a new Row widget for the new container
+          // New container with 4 columns
+          // New container with 4 columns
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildColumn('T1', '0'), // replace '0' with the value you want
-              _buildColumn('T2', '0'), // replace '0' with the value you want
-              _buildColumn('T3', '0'), // replace '0' with the value you want
-              _buildColumn('T4', '0'), // replace '0' with the value you want
+              _buildColumn('전기', selectedSemester),
+              _buildColumn('전선', selectedSemester),
+              _buildColumn('전필', selectedSemester),
+              _buildColumn('3.4000', selectedSemester),
             ],
           ),
         ],
@@ -144,7 +130,14 @@ class _ViewPageState extends State<ViewPage> {
     );
   }
 
-  Widget _buildColumn(String title, String number) {
+  Widget _buildColumn(String title, Semester semester) {
+    int totalCredits = 0;
+    for (var classTaken in semester.classesTaken) {
+      if (classTaken.creditType == title) {
+        totalCredits += classTaken.credits;
+      }
+    }
+
     return Column(
       children: [
         Text(
@@ -152,11 +145,10 @@ class _ViewPageState extends State<ViewPage> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         Text(
-          number,
+          totalCredits.toString(),
           style: TextStyle(fontSize: 18),
         ),
       ],
     );
   }
-
 }
